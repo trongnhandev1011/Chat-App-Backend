@@ -17,8 +17,13 @@ const getChatById = async (req, res) => {
 };
 
 const getAllChat = async (_req, res) => {
+  const user = _req.user;
+  console.log(user);
+
   try {
-    const chats = await ChatSchema.find({}).sort({
+    const chats = await ChatSchema.find({
+      users: user.id,
+    }).sort({
       createdAt: -1,
     });
     return res.status(200).json({

@@ -16,16 +16,19 @@ const authMiddleware = async (req, res, next) => {
     if (data.role === "authenticated") {
       const { avatar_url, email, name } = data.user_metadata;
 
-      const user = await getUserByEmail(data.user_metadata?.email);
+      let user = await getUserByEmail(data.user_metadata?.email);
 
       if (!user) {
-        await userModel.create({
+        user = await userModel.create({
           avatarUrl: avatar_url,
           displayName: name,
           email,
           provider: data.app_metadata.provider,
         });
       }
+
+      req.user = user;
+
       next();
     } else {
       res.status(401).json({

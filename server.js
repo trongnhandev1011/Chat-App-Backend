@@ -6,7 +6,6 @@ const { createServer } = require("node:http");
 const cors = require("cors");
 const chatRoutes = require("./routes/chat");
 const userRoutes = require("./routes/user");
-const { authMiddleware } = require("./middlewares/auth");
 
 const app = express();
 const server = createServer(app);
@@ -40,7 +39,7 @@ app.use(function (req, res, next) {
 
 //routes
 app.use("/api/chat", chatRoutes);
-app.use("/api/user", authMiddleware, userRoutes);
+app.use("/api/user", userRoutes);
 
 //connect to db
 mongoose
