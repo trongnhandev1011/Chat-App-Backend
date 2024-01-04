@@ -4,11 +4,8 @@ const { Server } = require("socket.io");
 const getChatById = async (req, res) => {
   try {
     const { id } = req.params;
-    const [createdUserId, secondUserId] = id.split("_");
-    const user = await ChatSchema.findOne({
-      createdUserId,
-      secondUserId,
-    });
+
+    const user = await ChatSchema.findById(id);
     return res.status(200).json({
       user,
     });
@@ -50,21 +47,21 @@ const getAllChatOfUser = async (_req, res) => {
 };
 
 const createChat = async (req, res) => {
-  const { createdUserId, secondUserId, messages } = req.body;
+  const { chatName, createdUserId, users } = req.body;
   try {
     console.log(ChatSchema);
     const chat = await ChatSchema.find({
-      createdUserId,
-      secondUserId,
+      chatName,
     });
 
     if (chat.length > 0) {
       res.status(400).json({ error: "Chat is exist" });
     } else {
       const result = await ChatSchema.create({
+        chatName,
         createdUserId,
-        secondUserId,
-        messages,
+        messages: [],
+        users,
       });
       res.status(200).json(result);
     }

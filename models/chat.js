@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { userSchema } = require("../models/user");
 
 const Schema = mongoose.Schema;
 
@@ -19,12 +20,12 @@ const MessageSchema = new Schema(
 );
 
 const ChatSchema = new Schema({
-  createdUserId: {
+  chatName: {
     type: String,
     required: true,
   },
-  secondUserId: {
-    type: String,
+  users: {
+    type: [String],
     required: true,
   },
   messages: {

@@ -8,8 +8,23 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    avatarUrl: {
+      type: String,
+      default: "",
+    },
+    provider: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = {
+  userSchema,
+  userModel: mongoose.model("User", userSchema),
+};
