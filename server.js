@@ -6,6 +6,7 @@ const { createServer } = require("node:http");
 const cors = require("cors");
 const chatRoutes = require("./routes/chat");
 const userRoutes = require("./routes/user");
+const { saveChatMessage } = require("./controllers/chat");
 
 const app = express();
 const server = createServer(app);
@@ -23,8 +24,16 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("messages", (msg) => {
-    console.log(msg);
+  socket.on("messages", async ({ message, userId, chatId }) => {
+    const result = await saveChatMessage({ message, userId, chatId });
+
+    if (result) {
+      io.to(chatId).emit("messages", result);
+    }
+  });
+
+  socket.on("join_chat_room", ({ userId, chatId }) => {
+    socket.join(chatId);
   });
 });
 
@@ -49,11 +58,11 @@ mongoose
 
 //port
 server.listen("4000", () => {
-  console.log(1234);
+  // console.log(1234);
 });
 
 app.get("/", (req, res) => {
-  res.json({ msg: "hello" });
+  // res.json({ msg: "hello" });
 });
 
 module.exports = { io };

@@ -22,7 +22,6 @@ const getMyProfile = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err.message);
     res.status(401).json({
       error: "AUTHENTICATED_FAILED",
     });

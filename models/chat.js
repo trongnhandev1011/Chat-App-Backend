@@ -6,12 +6,18 @@ const Schema = mongoose.Schema;
 const MessageSchema = new Schema(
   {
     createdUserId: {
-      type: String,
+      type: mongoose.Schema.ObjectId,
       required: true,
+      ref: "User",
     },
     content: {
       type: String,
       required: true,
+    },
+    chatId: {
+      type: mongoose.Schema.ObjectId,
+      required: true,
+      ref: "ChatSchema",
     },
   },
   {
@@ -25,11 +31,7 @@ const ChatSchema = new Schema({
     required: true,
   },
   users: {
-    type: [String],
-    required: true,
-  },
-  messages: {
-    type: [MessageSchema],
+    type: [mongoose.Schema.ObjectId],
     required: true,
   },
 });
